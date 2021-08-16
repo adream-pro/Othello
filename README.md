@@ -1,25 +1,25 @@
-# Othello 
+# Othello with Numpy and matrix !
 An working Othello game with __numpy__ !
-Ce fichier n'est pas un executable, pour jouer il faut l'ouvrir dans un __IDE python 3__
-Il faut suivre les indications donnés dans le shell, pour jouer il faut rentrer les coordonés sous la forme __yx (11)__ pour le coin en haut a gauche.
-ENJOY !
+This file is not an executable, to play it must be opened in a __IDE python 3__
+You have to follow the instructions given in the shell, to play you have to enter the coordinates in the form __yx (11)__ for the top left corner.
+ENJOY!
 
-## Graphism
-Pour le moment, le programme ne comporte pas de graphisme mis a part le shell. Les graphismes seront réalisé avec le programme __pyplot__ afin de garder une unité dans le code car __pyplot__ et __numpy__ sont complémentaire.
+## Graphics
+For the moment, the program does not include any graphics except the shell. The graphics will be made with the __pyplot__ program in order to keep a unit in the code because __pyplot__ and __numpy__ are complementary.
 
 ## Disclaimer
-Le jeu n'est qu'a 50% de sont devellopement. Voici donc la liste des fonctionnalités qui arriveront d'ici peu :
-- Une interface graphique en pyplot
-- Une IA afin d'implementer different modes de jeu
-- un fichier en executable avec un menu 
-- Une réorganistation du code pour une meilleur compréhension
+The game is only 50% of its development. Here is the list of features that will arrive shortly:
+- A pyplot graphical interface
+- An AI to implement different game modes
+- an executable file with a menu
+- A reorganization of the code for a better understanding
 
-# Explication du code
+# Explanation of the code
 
-### definition de la matrice
-la matrice va etre le squellete de notre plateau de jeu, elle va aussi nous servir pour placer les pions.  
+### definition of the matrix
+the matrix will be the squellete of our game board, it will also be used to place the pawns.  
 
-Ici nous definnisons notre matrice que l'on nomme Mplateau et nous placons les pions de départ, nous avons 1 pour le pions blanc et 2 pour le noir, i est notre ligne et j notre collone. la variable p est égal a 1 ou 2 en fonction du joueur qui joue.  
+Here we define our matrix which we call `Mplateau` and we place the starting pawns, we have 1 for the white pawns and 2 for the black, i is our row and j our collone. the variable p is equal to 1 or 2 depending on the player who is playing.
 ```
 Mplateau=np.zeros((8,8),int)  
 Mplateau[3,3]=1  
@@ -28,7 +28,7 @@ Mplateau[4,3]=2
 Mplateau[3,4]=2
 ```   
 
-La fonction nv_plateaux remet la matrice a son état d'origine.  
+The `nv_plateaux` function returns the matrix to its original state.   
 ```
 def nv_plateau(Mplateau):   
     Mplateau=np.zeros((8,8),int)  
@@ -40,19 +40,19 @@ def nv_plateau(Mplateau):
 ```  
 
 
-La fonction surplateau nous permet de savoir si les coordonnés saisie se situe bien sur notre plateau.  
+The `surplateau` function allows us to know if the coordinates entered is well on our board.  
 ```
 def surplateau(i, j):  
     return i >= 0 and i <= 7 and j >= 0 and j <=7
 ```  
     
-Cette fonction primaire nous permet d'afficher la matrice dans le shell et sera remplacée a terme par l'interface graphique.  
+This primary function allows us to display the matrix in the shell and will eventually be replaced by the graphical interface.
 ```
 def dessine_plateau(Mplateau):
     print(Mplateau) 
     return Mplateau  
 ```  
-### Modélisation de la capture
+### Capture modeling
 
 ```
 def poser_pion():# Renvoie une liste avec le pion du joueur comme premier élément et le pion du second joueur comme second
