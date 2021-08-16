@@ -54,18 +54,19 @@ def dessine_plateau(Mplateau):
 ```  
 ### Capture modeling
 
+The `poser_pion` function returns a list defining the color of player 1 and that of player 2. If the first player chooses the color black (2) then the second player will get the color white (1). In addition, the choice of this color will define the color of our first pawn in the matrix via this function.
 ```
-def poser_pion():# Renvoie une liste avec le pion du joueur comme premier élément et le pion du second joueur comme second
+def poser_pion():
     p = 0
     while not (p == '2' or p == '1'):
         print('Entrez 2 pour que les noirs commencent')
         p = input()
-    if p == 2:      # le premier élément de la liste est le pion du joueur2, le second est le pion du joueur 1.
+    if p == 2:      
         return [2, 1]
-    else:           # joueur 1 puis joueur 2 
+    else:           
         return [1, 2]
 ```  
-
+The `coup_possible` function returns `False` if the move is not possible, ie if the square is not empty (= a 0) or if the pawn is not on the board. To check if a move is possible, this function temporarily places a pawn on the board, where the player wants to play.
 ```
 def coup_possible(Mplateau, p, istart, jstart):
     
@@ -78,14 +79,14 @@ def coup_possible(Mplateau, p, istart, jstart):
     else:
         otherP = 1
 ``` 
-
+Once the move is defined as possible, the program calls the `pion_a_retourner` function. This function has the list of directions. As soon as this function finds a pawn of the opposite color to that of our player, it will go up in its direction, stopping once it leaves the board or when it encounters an empty square which will validate the move and proceed to the capture by changing the color of the pawns until reaching its starting position. In addition, if no pawn has been returned, the move is defined as invalid.
 ```
     pion_a_retourner = []
     for idirection, jdirection in [[0, 1], [1, 1], [1, 0], [1, -1], [0, -1], [-1, -1], [-1, 0], [-1, 1]]:
         i, j = istart, jstart
         i += idirection # premier pas dans la direction
         j += jdirection # premier pas dans la direction
-        if surplateau(i, j) and Mplateau[i,j] == otherP:   # Il y a une pièce appartenant à l'autre joueur à côté de notre pièce
+        if surplateau(i, j) and Mplateau[i,j] == otherP:   
             i += idirection
             j += jdirection
             if not surplateau(i, j):
@@ -93,11 +94,11 @@ def coup_possible(Mplateau, p, istart, jstart):
             while Mplateau[i,j] == otherP:
                 i += idirection
                 j += jdirection
-                if not surplateau(i, j): # sortir de la boucle while, puis continuer dans la boucle for
+                if not surplateau(i, j):
                     break
             if not surplateau(i, j):
                 continue
-            if Mplateau[i,j] == p: # Il y a des pièces à retourner. Allez dans le sens inverse jusqu'à ce que nous atteignions la case de départ, en notant toutes les pions le long du chemin.
+            if Mplateau[i,j] == p: 
                 while True:
                     i -= idirection
                     j -= jdirection
@@ -105,12 +106,12 @@ def coup_possible(Mplateau, p, istart, jstart):
                         break
                     pion_a_retourner.append([i, j])
                     
-    Mplateau[istart,jstart] = 0 # restaure l'espace vide
-    if len(pion_a_retourner) == 0:   # Si aucun pion n'a été retournée, ce n'est pas un coup valide.
+    Mplateau[istart,jstart] = 0 
+    if len(pion_a_retourner) == 0:   
         return False
     return pion_a_retourner
 ```  
-
+This last function allows to output a list of all the moves possible by a player by using the preceding functions.
 ```
 def donne_coup_possible(Mplateau, p):# Renvoie une liste de [i, j] listes de coups valides pour le joueur donné sur le plateau donné.
     coup_valide = []
