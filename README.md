@@ -70,10 +70,10 @@ The `coup_possible` function returns `False` if the move is not possible, ie if 
 ```
 def coup_possible(Mplateau, p, istart, jstart):
     
-    if Mplateau[istart,jstart] != 0 or not surplateau(istart,jstart): # Renvoie False si le mouvement du joueur sur l'espace istart, jstart n'est pas valide.
-        return False                            # S'il s'agit d'un coup valide, renvoie une liste d'espaces qui deviendraient ceux du joueur s'il effectuait un mouvement ici.
+    if Mplateau[istart,jstart] != 0 or not surplateau(istart,jstart): 
+        return False                           
         
-    Mplateau[istart,jstart] = p                 # place temporairement le pion sur le plateau.
+    Mplateau[istart,jstart] = p                
     if p == 1:
         otherP = 2
     else:
@@ -113,7 +113,7 @@ Once the move is defined as possible, the program calls the `pion_a_retourner` f
 ```  
 This last function allows to output a list of all the moves possible by a player by using the preceding functions.
 ```
-def donne_coup_possible(Mplateau, p):# Renvoie une liste de [i, j] listes de coups valides pour le joueur donné sur le plateau donné.
+def donne_coup_possible(Mplateau, p):
     coup_valide = []
     for i in range(8):
         for j in range(8):
