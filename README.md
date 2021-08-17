@@ -122,4 +122,122 @@ def donne_coup_possible(Mplateau, p):
     return coup_valide
 ```
 
+### Relative to the stroke
 
+This function allows us to place a pawn on the board by checking thanks to the previous function that the move is valid, this function also returns the pawns when there is a capture.
+```
+def jouer(Mplateau, p, istart, jstart):
+    pion_a_retourner = coup_possible(Mplateau, p, istart, jstart)
+    
+    if pion_a_retourner == False:
+        return False
+    
+    Mplateau[istart,jstart] = p
+    for i, j in pion_a_retourner:
+        Mplateau[i,j] = p
+    return True
+```
+The `coup_joueur` function allows the player to choose the move he wants to make and transforms his input number into position [i, j].
+```
+def coup_joueur(Mplateau, joueurp):# Laissez le joueur taper son coup.# Renvoie le déplacement sous la forme [i, j] 
+    DIGITS1TO8 = '1 2 3 4 5 6 7 8'.split() #permet de prendre les chiffres séparemment
+    while True:
+        print('entrer le coup')
+        move = input().lower()
+        
+        if len(move) == 2 and move[0] in DIGITS1TO8 and move[1] in DIGITS1TO8:
+            i = int(move[0]) - 1
+            j = int(move[1]) - 1
+            if coup_possible(Mplateau, joueurp, i, j) == False:
+                continue
+            else: 
+                break
+        else:
+             print("Ce n'est pas un coup possible.")
+             
+    return [i, j]
+```
+
+### Jouer(jeu et definition de qui joue)
+
+This basic function allows you to define who plays first regardless of the color chosen in the shell (dev function)
+```
+def first_joueur(): #le joueur qui commence.
+        return 'joueur2'
+```
+This function allows you to count the number of black pawns on the board (1 pawn = 1 point).
+```
+def nscores(Mplateau):
+    global nscore
+    nscore =0
+    for i in range(8):
+        for j in range(8):
+            if Mplateau[i,j] == 2:
+                nscore += 1
+    print(nscore)
+```
+This function allows you to count the number of white pawns on the board (1 pawn = 1 point).
+```
+def bscores(Mplateau):
+    global bscore
+    bscore = 0
+    for i in range(8):
+        for j in range(8):
+            if Mplateau[i,j] == 1:
+                bscore += 1
+    print(bscore)
+```
+This function is a point counter, it compares the results of the two previous functions: `nscores` and` bscores`.
+```
+def qui_gagne(bscores, nscores):
+    if nscore > bscore:
+        print('les noirs ont gagnes!')
+    elif nscore < bscore:
+        print('les blancs ont gagnes!')
+    else:
+        print('Egalite!')
+```
+
+### script principal pour jouer dans le shell
+
+This part of the code is the main loop, it is this part that allows everything to be coordinated and made so that the players can take their turns, while saying when no more moves are possible.
+```
+print('Bienvenue sur OTHELLO !')
+
+while True:
+    mainBoard = nv_plateau(Mplateau) # Réinitialisez le plateau et le jeu.
+    
+    joueur1, joueur2 = poser_pion()
+    turn = first_joueur()
+    print('Le ' + turn + ' commence.')
+    
+    while True:
+        if turn == 'joueur1': 
+            dessine_plateau(Mplateau)
+            move = coup_joueur(Mplateau, 1)
+            jouer(Mplateau, 1, move[0], move[1])
+            if donne_coup_possible(Mplateau, 2) == []:
+                break
+            else:
+                turn = 'joueur2'
+                        
+        else:
+            dessine_plateau(Mplateau)
+            move = coup_joueur(Mplateau, 2)
+            jouer(Mplateau, 2, move[0], move[1])
+            if donne_coup_possible(Mplateau, 1) == []:
+                break
+            else:
+                turn = 'joueur1'
+```
+Once no more moves are possible, the board is displayed with the last pawn placed and the cores are counted in order to define who has won.
+```                             
+    dessine_plateau(Mplateau) # Afficher le plateau avec le dernier pion posé (final).
+    print('la partie est fini !')
+    print('score des noirs :')
+    nscores(Mplateau)
+    print('score des blancs :')
+    bscores(Mplateau)
+    qui_gagne(bscores, nscores)
+    break
+```
